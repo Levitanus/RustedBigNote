@@ -8,4 +8,5 @@ publish = false
 iced = { version = "0.2", features = ["glow",  "tokio", "debug"] }
 iced_native = "0.3"
 chrono = "0.4"
-midir = { version = "0.7", features = ["jack"] }
+# midir = { version = "0.7", features = ["jack"] }
+midir = { version = "0.7"}
