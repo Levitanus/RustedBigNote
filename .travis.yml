@@ -4,11 +4,9 @@ language: rust
 script:
   - cargo build --verbose --workspace
 
-
 deploy:
   provider: releases
-  api_key: "GITHUB OAUTH TOKEN"
+  api_key: "$GITHUB_TOKEN"
   file: "$TRAVIS_BUILD_DIR/target/debug/my_big_note.exe"
   skip_cleanup: true
   draft: true
-  overwrite: true
