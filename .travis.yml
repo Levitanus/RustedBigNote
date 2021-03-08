@@ -10,7 +10,5 @@ deploy:
   file: "$TRAVIS_BUILD_DIR/target/debug/my_big_note.exe"
   skip_cleanup: true
   on:
-    branches:
-      only:  
-        - master
+    branch: master
   draft: true
