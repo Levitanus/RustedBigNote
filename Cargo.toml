@@ -1,13 +1,11 @@
 [package]
-name = "my_big_note"
+name = "rusted_big_note"
 version = "0.1.0"
-authors = ["Levitanus <pianoist@ya.ru>"]
-publish = false
+authors = ["Timofey <pianoist@ya.ru>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# iced = { version = "0.2", features = ["glow",  "tokio", "debug"] }
-iced = { version = "0.2", features = ["tokio", "debug"] }
-iced_native = "0.3"
-chrono = "0.4"
-# midir = { version = "0.7", features = ["jack"] }
-midir = { version = "0.7"}
+druid = { git = "https://github.com/linebender/druid.git", features=["svg"] }
+tracing = { version = "0.1.22" }

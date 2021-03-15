@@ -1,185 +1,93 @@
-extern crate chrono;
-extern crate iced;
-extern crate midir;
+use tracing::error;
 
-use std::cell::RefCell;
-use std::error::Error;
-use std::io::{stdin, stdout, Write};
-use std::option::Option::Some;
-use std::sync::mpsc::{channel, Receiver, Sender};
-
-use iced::{
-    button, executor, pick_list, scrollable, time, Align, Application, Button, Column, Command,
-    Container, Element, Length, PickList, Scrollable, Settings, Space, Subscription, Text,
+use druid::{
+    kurbo::Line,
+    widget::{Container, FillStrat, Flex, Painter, Svg, SvgData, WidgetExt, WidgetWrapper},
+    AppLauncher, BoxConstraints, Color, Data, Env, Event, EventCtx, Insets, LayoutCtx, LifeCycle,
+    LifeCycleCtx, LocalizedString, PaintCtx, Point, Rect, RenderContext, Size, UpdateCtx, Widget,
+    WidgetPod, WindowDesc,
 };
-use midir::{Ignore, MidiInput, MidiInputConnection, MidiInputPort, MidiInputPorts};
 
-pub fn main() -> iced::Result {
-    BigNote::run(Settings::default())
+pub struct ZSvg<T> {
+    child: WidgetPod<T, Svg>,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Eq)]
-struct Port {
-    pub index: usize,
-    pub name: Box<String>,
-}
-impl std::fmt::Display for Port {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        // let midi_in = MidiInput::new("MyBigNote").unwrap();
-        write!(
-            f,
-            "{}",
-            // midi_in
-            //     .port_name(midi_in.ports().get(self.index).unwrap())
-            //     .unwrap()
-            &self.name
-        )
-    }
-}
-
-#[derive(Debug, Clone)]
-enum Message {
-    PortSelected(Port),
-    Tick(chrono::DateTime<chrono::Local>),
-}
-
-struct BigNote {
-    note: i32,
-    need_init: bool,
-    client_name: String,
-    scroll: scrollable::State,
-    ports_list: pick_list::State<Port>,
-    selected_port: Option<Port>,
-    midi_in: MidiInput,
-
-    connection: Option<MidiInputConnection<Sender<Vec<u8>>>>,
-    reciever: Option<Receiver<Vec<u8>>>,
-}
-
-impl BigNote {
-    fn ports_names(&self) -> Vec<Port> {
-        let mut names: Vec<Port> = Vec::new();
-        let midi_in = &self.midi_in;
-        let ports_amount = midi_in.port_count();
-        for port in 0..ports_amount {
-            names.push(Port {
-                index: port,
-                name: Box::new(
-                    midi_in
-                        .port_name(midi_in.ports().get(port).unwrap())
-                        .unwrap(),
-                ),
-            });
+impl<T: Data> ZSvg<T> {
+    fn new(child: Svg) -> Self {
+        ZSvg {
+            child: WidgetPod::new(child),
         }
-        names.into()
     }
-    fn connect(&mut self) {
-        println!("init:");
-        let ports = &self.midi_in.ports();
-        let selected_port = self.selected_port.as_ref().unwrap();
-        let port = ports.get(selected_port.index).unwrap();
-        println!("in port name: {}", &self.midi_in.port_name(&port).unwrap());
-        let (sender, reciever) = channel();
-        self.reciever = Some(reciever);
-        let midi_in = MidiInput::new(&self.client_name).unwrap();
-        self.connection = Some(
-            midi_in
-                .connect(
-                    &port,
-                    "name",
-                    |stamp, message, sender| {
-                        // println!("{}: {:?} len = {}", stamp, message, message.len());
-                        let mut packet = Vec::new();
-                        packet.extend_from_slice(message);
-                        sender.send(packet).unwrap();
-                    },
-                    sender,
-                )
-                .unwrap(),
-        );
+}
+impl<T> WidgetWrapper for ZSvg<T> {
+    type Wrapped = Svg;
+
+    fn wrapped(&self) -> &Self::Wrapped {
+        self.child.widget()
+    }
+
+    fn wrapped_mut(&mut self) -> &mut Self::Wrapped {
+        self.child.widget_mut()
     }
 }
 
-impl Application for BigNote {
-    type Executor = executor::Default;
-    type Message = Message;
-    type Flags = ();
-
-    fn new(_flags: ()) -> (BigNote, Command<self::Message>) {
-        (
-            BigNote {
-                note: -1,
-                need_init: true,
-                client_name: String::from("MyBigNote"),
-                connection: Option::None,
-                ports_list: pick_list::State::<Port>::default(),
-                scroll: scrollable::State::default(),
-                selected_port: None,
-                midi_in: MidiInput::new("MyBigNote").unwrap(),
-                reciever: None,
-            },
-            Command::none(),
-        )
+impl<T: Data> Widget<T> for ZSvg<T> {
+    fn event(&mut self, ctx: &mut EventCtx, event: &Event, data: &mut T, env: &Env) {
+        self.child.event(ctx, event, data, env)
     }
 
-    fn title(&self) -> String {
-        String::from("MyBigNote by Levitanus")
+    fn lifecycle(&mut self, ctx: &mut LifeCycleCtx, event: &LifeCycle, data: &T, env: &Env) {
+        self.child.lifecycle(ctx, event, data, env)
     }
 
-    fn view(&mut self) -> Element<Message> {
-        let port_names = self.ports_names();
-        let pick_list = PickList::new(
-            &mut self.ports_list,
-            port_names,
-            self.selected_port.clone(),
-            Message::PortSelected,
-        );
-
-        // let mut content = Scrollable::new(&mut self.scroll)
-        //     .width(Length::Fill)
-        //     .align_items(Align::Center)
-        //     .spacing(10)
-        //     .push(Space::with_height(Length::Units(600)))
-        //     .push(Text::new("Which is your favorite String?"))
-        //     .push(pick_list);
-
-        // content = content.push(Space::with_height(Length::Units(600)));
-
-        Container::new(pick_list)
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .center_x()
-            .center_y()
-            .into()
+    fn update(&mut self, ctx: &mut UpdateCtx, _old_data: &T, data: &T, env: &Env) {
+        self.child.update(ctx, data, env);
     }
 
-    fn update(&mut self, message: Message) -> Command<Message> {
-        match message {
-            Message::PortSelected(port) => {
-                println!("PortSelected");
-                self.selected_port = Some(port);
-                self.connect();
-            }
-            Message::Tick(_loc_time) => {
-                if self.reciever.is_some() {
-                    let reciever = &self.reciever.as_ref().unwrap();
-                    loop {
-                        let recv_result = reciever.try_recv();
-                        if !recv_result.is_err() {
-                            println!("{:?}", recv_result.as_ref().unwrap());
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
+    fn layout(&mut self, ctx: &mut LayoutCtx, bc: &BoxConstraints, data: &T, env: &Env) -> Size {
+        // For now, just copy of padding.
+        bc.debug_check("Padding");
+
+        let hpad = 10.0;
+        let vpad = 10.0;
+
+        let child_bc = bc.shrink((hpad, vpad));
+        let size = self.child.layout(ctx, &child_bc, data, env);
+        let origin = Point::new(10.0, 10.0);
+        self.child.set_origin(ctx, data, env, origin);
+
+        let my_size = Size::new(size.width + hpad, size.height + vpad);
+        let my_insets = self.child.compute_parent_paint_insets(my_size);
+        ctx.set_paint_insets(my_insets);
+        my_size
+    }
+
+    fn paint(&mut self, ctx: &mut PaintCtx, data: &T, env: &Env) {
+        let bounds = ctx.size().to_rect();
+        println!("{:?}", bounds);
+        ctx.fill(bounds, &Color::YELLOW);
+        let y = (bounds.y1 - bounds.y0) / 2.0;
+        let line = Line::new(Point::new(bounds.x0, y), Point::new(bounds.x1, y));
+        ctx.stroke(line, &env.get(druid::theme::PRIMARY_DARK), 1.0);
+        self.child.paint(ctx, data, env);
+    }
+}
+
+fn build_ui() -> impl Widget<Color> {
+    let tiger_svg = match include_str!("../assets/treble clef.svg").parse::<SvgData>() {
+        Ok(svg) => svg,
+        Err(err) => {
+            error!("{}", err);
+            error!("Using an empty SVG instead.");
+            SvgData::default()
         }
-        Command::none()
-    }
+    };
+    let svg_widget = Svg::new(tiger_svg.clone());
+    Container::new(ZSvg::new(svg_widget)).background(Color::WHITE)
+}
 
-    fn subscription(&self) -> Subscription<Message> {
-        let fps = 30;
-        time::every(std::time::Duration::from_millis(1000 / fps))
-            .map(|_| Message::Tick(chrono::Local::now()))
-    }
+fn main() {
+    let data = Color::BLACK;
+    let window = WindowDesc::new(build_ui());
+    AppLauncher::with_window(window).launch((data));
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="7.3074412mm"
+   height="16.644884mm"
+   viewBox="0 0 7.3074412 16.644883"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="♯.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="138.38415"
+     inkscape:cy="37.41825"
+     inkscape:document-units="mm"
+     inkscape:current-layer="text817"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0.2"
+     fit-margin-bottom="0.2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1029"
+     inkscape:window-x="0"
+     inkscape:window-y="597"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-29.962967,-150.53131)">
+    <g
+       aria-label="♯"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.49774361px;line-height:1.25;font-family:AG_Souvenir;-inkscape-font-specification:'AG_Souvenir, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.04575813"
+       id="text817">
+      <path
+         d="m 35.169964,150.53131 h 0.505321 l 0.05493,0.0549 v 3.33951 l 1.307242,-0.65912 0.03296,0.022 v 1.54892 q -0.03296,0.0769 -1.340198,0.73601 v 4.09749 l 1.340198,-0.60419 v 1.48301 q -0.01099,0.0439 -1.340198,0.77995 v 3.26261 l -0.05493,0.0439 h -0.505321 l -0.05493,-0.0439 v -2.99896 l -3.163745,1.53793 v 3.80089 l -0.05493,0.0439 h -0.46138 l -0.05493,-0.0439 V 163.406 l -1.417094,0.65911 v -1.5599 q 0,-0.0659 1.417094,-0.72503 v -4.1634 h -0.02197 l -1.395124,0.61518 v -1.52695 l 1.417094,-0.71404 v -3.15276 l 0.05493,-0.0439 h 0.46138 l 0.05493,0.0439 v 2.87813 l 3.163745,-1.47202 v -3.65808 z m -3.218671,6.8438 v 4.14143 l 3.163745,-1.52695 v -4.0865 z"
+         style="stroke-width:1.04575813"
+         id="path822" />
+    </g>
+  </g>
+</svg>
