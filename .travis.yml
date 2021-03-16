@@ -1,13 +1,13 @@
 os: windows
 language: rust
 script:
-- cargo build --verbose --workspace
+- cargo build --verbose --workspace --release
 
 deploy:
   provider: releases
   api_key:
     secure: a25CS1lsFjdgrYuaNLZPvocYbnFlqgHG2r/0hAivjmDN30tHAHOp6XXvOcqog0uQ2yeZeRQk65h9RGUHTryNe5zOnTq25dZOhEz5gIt5x4QSn6bJ+0FVJrWPgL8Z9gX8nX5xu2qY0obfKQhB3YhGaoYQKXysDheRKsktEopKfHwgoWXEOyz4pB4soJcVBLFcm1hG9j/37rVkZwaBX0+viLLq9woA1TRDwTmooIJoMNznjCDOwDdUBD7qAF4P3SUA6Unjarv7LJuuS6XtftqYlOA1KBAYeVOLa5jB1HYp1C0cJ6+TWNUxsRaxgdQEnXpPhZRAN5C7MYCl5nX+Z5iw8I32UhmPrLJuIHU/m/+LKkBOhY0WisjQVuCSuV+eBCPA/IfoCXse+wQTmxNQMLULCU+pYGogKkvt14ON+hlyz4to467Scmj/JhKQfWU8ZQMPSnWNURhy5DkNn7H0WtxO0wlEXEUQEf3jQNIjkIN4FWtxiKffpqLp37QBL4bzundpVADXYl/FYObmu3MtOGb6+WGrgCiQMUXub5kdYtQfWyEGnWF49di3FwVejVY7+NadiXe2ufbf+Ql6wfGiZv4KyGDHTwzXdPJXaD5BMpTIckIiJuVkuKjMDehyIconoYhBO+5+LsbuSVccY6n6qQG771l88ZM3LR3JoTTxc97i4oE=
-  file: "$TRAVIS_BUILD_DIR/target/debug/my_big_note.exe"
+  file: "$TRAVIS_BUILD_DIR/target/release/rusted_big_note.exe"
   skip_cleanup: true
   on:
     tags: true
