@@ -8,7 +8,7 @@ use druid::{
     WidgetPod, WindowDesc,
 };
 
-mod staff;
+mod note;
 
 pub struct ZSvg<T> {
     child: WidgetPod<T, Svg>,
