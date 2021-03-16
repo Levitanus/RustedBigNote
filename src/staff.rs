@@ -37,30 +37,52 @@ const NOTE_LINES: [NoteLine; 24] = [
     NoteLine::new(6.5, false), // B
 ];
 
-#[derive(PartialEq)]
+#[test]
+fn test_note_line() {
+    assert_eq!(
+        NOTE_LINES[1].from_alteration(NoteAlt::Sharp),
+        (0.0, NoteAlt::Sharp)
+    );
+    assert_eq!(
+        NOTE_LINES[1].from_alteration(NoteAlt::Flat),
+        (0.5, NoteAlt::Flat)
+    );
+    assert_eq!(
+        NOTE_LINES[23].from_alteration(NoteAlt::Flat),
+        (6.5, NoteAlt::White)
+    );
+    assert_eq!(
+        NOTE_LINES[22].from_alteration(NoteAlt::Flat),
+        (6.5, NoteAlt::Flat)
+    );
+}
+
+#[derive(Clone, Debug, PartialEq)]
 enum NoteAlt {
     White,
     Sharp,
     Flat,
 }
 
+#[derive(Debug)]
 pub struct NoteLine {
     root: f32,
     alterated: bool,
 }
 impl NoteLine {
-    fn new(root: f32, alterated: bool) -> Self {
+    const fn new(root: f32, alterated: bool) -> Self {
         NoteLine {
             root: root,
             alterated: alterated,
         }
     }
-    fn from_alteration(&self, alteration: &mut NoteAlt) -> f32 {
-        if NoteAlt::Sharp == alteration || self.alterated == false {
-            return self.root;
+    fn from_alteration(&self, alteration: NoteAlt) -> (f32, NoteAlt) {
+        if NoteAlt::Sharp == alteration {
+            return (self.root, NoteAlt::Sharp);
+        } else if self.alterated == false {
+            return (self.root, NoteAlt::White);
         } else {
-            alteration = NoteAlt::Flat;
-            return self.root + 1.0;
+            return (self.root + 0.5, NoteAlt::Flat);
         }
     }
 }
@@ -69,17 +91,20 @@ pub struct Note {
     midi_nr: u8,
 }
 impl Note {
-    fn spec(&self, alteration: Option<NoteAlt>) -> (f32, NoteAlt, &&str) {
+    fn spec(&self, alteration: NoteAlt) -> (f32, NoteAlt, &&str) {
         let midi_nr = self.midi_nr as usize;
         let modulo = ((midi_nr % LINES_AMOUTN) + LINES_AMOUTN) % LINES_AMOUTN;
         let remainder = midi_nr % LINES_AMOUTN;
-        let mut alt = alteration.unwrap_or(NoteAlt::Sharp);
-        let line = &NOTE_LINES[remainder].from_alteration(&mut alt) + ((modulo * 7) as f32);
+        let (line, alt) = &NOTE_LINES[remainder].from_alteration(alteration);
+        let line_full = line + (modulo * 7) as f32;
         let name = &NOTE_NAMES[remainder];
-        (line, alt, name)
+        (line_full, alt.clone(), name)
+    }
+    fn line(&self, alteration: NoteAlt) -> f32 {
+        let (line, _alt, _name) = self.spec(alteration);
+        line
     }
 }
-
 pub struct ZStack {
     clef: Option<Svg>,
     note: Option<Svg>,

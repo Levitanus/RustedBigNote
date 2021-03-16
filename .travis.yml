@@ -1,7 +1,7 @@
 os: windows
 language: rust
 script:
-- cargo build --verbose --workspace --release
+- cargo build --verbose --workspace
 
 deploy:
   provider: releases
