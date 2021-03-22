@@ -1,3 +1,9 @@
+use druid::widget::SvgData;
+
+use tracing::error;
+
+// mod note;
+
 const LINES_AMOUTN: usize = 24;
 const NOTE_NAMES: [&str; 12] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"];
 const NOTE_LINES: [NoteLine; 24] = [
@@ -72,6 +78,24 @@ pub enum NoteAlt {
     White,
     Sharp,
     Flat,
+}
+impl NoteAlt {
+    pub fn svgdata(&self) -> Option<SvgData> {
+        let file: Result<SvgData, Box<dyn std::error::Error + 'static>>;
+        match *self {
+            NoteAlt::White => return None,
+            NoteAlt::Sharp => file = include_str!("../assets/sharp.svg").parse::<SvgData>(),
+            NoteAlt::Flat => file = include_str!("../assets/flat.svg").parse::<SvgData>(),
+        }
+        match file {
+            Ok(svg) => Some(svg),
+            Err(err) => {
+                error!("{}", err);
+                error!("Using an empty SVG instead.");
+                Some(SvgData::default())
+            }
+        }
+    }
 }
 impl std::fmt::Display for NoteAlt {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {

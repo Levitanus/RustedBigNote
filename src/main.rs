@@ -7,8 +7,8 @@ use druid::{
     LifeCycleCtx, LocalizedString, PaintCtx, Point, Rect, RenderContext, Size, UpdateCtx, Widget,
     WidgetPod, WindowDesc,
 };
-
 mod note;
+mod staff;
 
 pub struct ZSvg<T> {
     child: WidgetPod<T, Svg>,
@@ -37,21 +37,21 @@ impl<T: Data> Widget<T> for ZSvg<T> {
 
     fn layout(&mut self, ctx: &mut LayoutCtx, bc: &BoxConstraints, data: &T, env: &Env) -> Size {
         // For now, just copy of padding.
-        // bc.debug_check("Padding");
+        bc.debug_check("Padding");
 
-        // let hpad = 10.0;
-        // let vpad = 10.0;
+        let hpad = 10.0;
+        let vpad = 10.0;
 
-        // let child_bc = bc.shrink((hpad, vpad));
-        // let size = self.child.layout(ctx, &child_bc, data, env);
-        // let origin = Point::new(10.0, 10.0);
-        // self.child.set_origin(ctx, data, env, origin);
+        let child_bc = bc.shrink((hpad, vpad));
+        let size = self.child.layout(ctx, &child_bc, data, env);
+        let origin = Point::new(10.0, 10.0);
+        self.child.set_origin(ctx, data, env, origin);
 
-        // let my_size = Size::new(size.width + hpad, size.height + vpad);
-        // let my_insets = self.child.compute_parent_paint_insets(my_size);
-        // ctx.set_paint_insets(my_insets);
-        // my_size
-        Size::new(Default::default(), Default::default())
+        let my_size = Size::new(size.width + hpad, size.height + vpad);
+        let my_insets = self.child.compute_parent_paint_insets(my_size);
+        ctx.set_paint_insets(my_insets);
+        my_size
+        // Size::new(Default::default(), Default::default())
     }
 
     fn paint(&mut self, ctx: &mut PaintCtx, data: &T, env: &Env) {
@@ -61,12 +61,12 @@ impl<T: Data> Widget<T> for ZSvg<T> {
         let y = (bounds.y1 - bounds.y0) / 2.0;
         let line = Line::new(Point::new(bounds.x0, y), Point::new(bounds.x1, y));
         ctx.stroke(line, &env.get(druid::theme::PRIMARY_DARK), 1.0);
-        // self.child.paint(ctx, data, env);
+        self.child.paint(ctx, data, env);
     }
 }
 
 fn build_ui() -> impl Widget<Color> {
-    let tiger_svg = match include_str!("../assets/treble clef.svg").parse::<SvgData>() {
+    let clef_svg = match include_str!("../assets/treble clef.svg").parse::<SvgData>() {
         Ok(svg) => svg,
         Err(err) => {
             error!("{}", err);
@@ -74,7 +74,7 @@ fn build_ui() -> impl Widget<Color> {
             SvgData::default()
         }
     };
-    let svg_widget = Svg::new(tiger_svg.clone());
+    let svg_widget = Svg::new(clef_svg.clone());
     Container::new(ZSvg::new(svg_widget)).background(Color::WHITE)
 }
 
