@@ -80,19 +80,19 @@ pub enum NoteAlt {
     Flat,
 }
 impl NoteAlt {
-    pub fn svgdata(&self) -> Option<SvgData> {
+    pub fn svgdata(&self) -> SvgData {
         let file: Result<SvgData, Box<dyn std::error::Error + 'static>>;
         match *self {
-            NoteAlt::White => return None,
+            NoteAlt::White => return SvgData::default(),
             NoteAlt::Sharp => file = include_str!("../assets/sharp.svg").parse::<SvgData>(),
             NoteAlt::Flat => file = include_str!("../assets/flat.svg").parse::<SvgData>(),
         }
         match file {
-            Ok(svg) => Some(svg),
+            Ok(svg) => svg,
             Err(err) => {
                 error!("{}", err);
                 error!("Using an empty SVG instead.");
-                Some(SvgData::default())
+                SvgData::default()
             }
         }
     }
