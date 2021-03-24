@@ -1,4 +1,4 @@
-use druid::widget::SvgData;
+use druid::{widget::SvgData, Data};
 
 use tracing::error;
 
@@ -109,17 +109,17 @@ impl std::fmt::Display for NoteAlt {
 
 #[derive(Debug)]
 pub struct NoteLine {
-    root: f32,
+    root: f64,
     alterated: bool,
 }
 impl NoteLine {
-    const fn new(root: f32, alterated: bool) -> Self {
+    const fn new(root: f64, alterated: bool) -> Self {
         NoteLine {
             root: root,
             alterated: alterated,
         }
     }
-    fn from_alteration(&self, alteration: NoteAlt) -> (f32, NoteAlt) {
+    fn from_alteration(&self, alteration: NoteAlt) -> (f64, NoteAlt) {
         if self.alterated == false {
             return (self.root, NoteAlt::White);
         } else if NoteAlt::Sharp == alteration {
@@ -130,16 +130,20 @@ impl NoteLine {
     }
 }
 
+#[derive(Data, Clone, PartialEq, Debug)]
 pub struct Note {
     midi_nr: u8,
 }
 impl Note {
-    pub fn spec(&self, alteration: NoteAlt) -> (f32, NoteAlt, String) {
+    pub fn new(midi_nr: u8) -> Self {
+        Note { midi_nr: midi_nr }
+    }
+    pub fn spec(&self, alteration: NoteAlt) -> (f64, NoteAlt, String) {
         let midi_nr = self.midi_nr as usize;
         let modulo = midi_nr / LINES_AMOUTN;
         let remainder = midi_nr % LINES_AMOUTN;
         let (line, alt) = &NOTE_LINES[remainder].from_alteration(alteration);
-        let line_full = line + (modulo * 7) as f32;
+        let line_full = line + (modulo * 7) as f64;
         let octave = (midi_nr as usize / 12) - 2;
         let mut note_name: &str;
         if alt == &NoteAlt::Sharp || alt == &NoteAlt::White {
@@ -150,7 +154,7 @@ impl Note {
         let name = format!("{}{}{}", note_name, alt, octave);
         (line_full, alt.clone(), name)
     }
-    pub fn line(&self, alteration: NoteAlt) -> f32 {
+    pub fn line(&self, alteration: NoteAlt) -> f64 {
         let (line, _alt, _name) = self.spec(alteration);
         line
     }

@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 24.890503 39.822662"
    height="39.822662mm"
-   width="24.890503mm">
+   width="24.890503mm"
+   sodipodi:docname="bass clef.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1029"
+     id="namedview1480"
+     showgrid="false"
+     inkscape:zoom="1.5679933"
+     inkscape:cx="-35.23359"
+     inkscape:cy="75.255425"
+     inkscape:window-x="0"
+     inkscape:window-y="597"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
   <defs
      id="defs2" />
   <metadata
@@ -20,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -33,18 +57,14 @@
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 68.41369,77.58482 c -1.63791,-1.8269 -3.275806,-3.653784 -3.055192,-5.638278 0.220614,-1.984493 2.2995,-4.126376 5.008106,-5.008196 2.708606,-0.881821 6.047812,-0.503798 8.567452,1.73234 2.51964,2.236139 4.220651,6.331166 2.299308,12.788312 -1.921344,6.457147 -7.464817,15.276307 -13.008663,24.096062"
          id="path826" />
-      <circle
+      <path
          style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.11653543;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:149.29133606;stroke-opacity:1"
-         id="path830"
-         cx="88.228966"
-         cy="72.129486"
-         r="1.5" />
-      <circle
-         r="1.5"
-         cy="84.300308"
-         cx="88.228966"
-         id="circle834"
-         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.11653543;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:149.29133606;stroke-opacity:1" />
+         d="m 89.728966,72.129486 a 1.5,1.5 0 0 1 -1.5,1.5 1.5,1.5 0 0 1 -1.5,-1.5 1.5,1.5 0 0 1 1.5,-1.5 1.5,1.5 0 0 1 1.5,1.5 z"
+         id="path830" />
+      <path
+         style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.11653543;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:149.29133606;stroke-opacity:1"
+         d="m 89.728966,84.300308 a 1.5,1.5 0 0 1 -1.5,1.5 1.5,1.5 0 0 1 -1.5,-1.5 1.5,1.5 0 0 1 1.5,-1.5 1.5,1.5 0 0 1 1.5,1.5 z"
+         id="circle834" />
     </g>
   </g>
 </svg>
